@@ -11,7 +11,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {
     join
 } = require("path");
-// setIterm2Badge("老袁的开发环境");
+// setIterm2Badge("开发环境");
 const PurifyCSSPlugin = require('purifycss-webpack');
 const glob = require("glob");
 console.log("寻找文件", glob.sync(join(__dirname, './dist/*.html')));
