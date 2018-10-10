@@ -43,7 +43,13 @@ module.exports = {
 			title: "My App",
 			template: __dirname + "/app/index.tmpl.html",
 			hash: true,
-			chunks: ['main1', 'main2']
+			chunks: ['main1', 'main2'],
+			chunksSortMode: function(chunk1,chunk2){
+				var orders = [ 'main2' , 'main1' ];
+				var order1 = orders.indexOf(chunk1.names[0]);
+				var order2 = orders.indexOf(chunk2.names[0]);
+				return order1 - order2;
+			},
 		}),
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.LoaderOptionsPlugin({
