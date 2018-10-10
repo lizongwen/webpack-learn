@@ -2,8 +2,8 @@ body{
 	color:lawngreen
 }
 div{
-	background: url(../img/tt.png);
+	background: url('../img/tt.png');
 }
 p{
-	background: url(../img/arrowright.png);
+	background: url('../img/arrowright.png');
 }
