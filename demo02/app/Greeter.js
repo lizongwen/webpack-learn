@@ -8,11 +8,8 @@ import greeterstyles from './Greeter.css';
 //return greet;
 //};
 class GreeterClass extends Component {
-    render() {
-        return ( <
-            div className = { greeterstyles.conotent } > { config.greetText } <
-            /div>
-        );
-    }
+	render() {
+		return (<div className={greeterstyles.conotent} > {config.greetText} </div>);
+	}
 }
 export default GreeterClass
