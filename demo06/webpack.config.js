@@ -4,14 +4,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 var path = require('path');
 module.exports = {
-	// entry: __dirname + '/src/script/app.js',
-	entry:{
-		app:__dirname + '/src/script/app.js',
-	},
+	entry: {app:__dirname + '/src/scripts/index'},
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		filename: 'script/[name]_[chunkhash:5].js',
-		publicPath: "../"
+		publicPath: '../'
 	},
 	resolve: {
 		extensions: ['.js', '.json', '.scss', '.css'],
@@ -19,9 +16,8 @@ module.exports = {
 	module: {
 		rules: [{
 			test: /\.css$/,
-			use: [{
-				loader: MiniCssExtractPlugin.loader
-			}, 'css-loader?modules&localIdentName=[name]_[local]-[hash:base64:5]']
+			// use: ['css-loader', MiniCssExtractPlugin.loader]
+			use: [MiniCssExtractPlugin.loader, 'css-loader']
 		}, {
 			test: /\.(png|jpg|gif)$/,
 			use: [{
@@ -33,19 +29,21 @@ module.exports = {
 			}]
 		}, {
 			test: /\.(htm|html)$/i,
-			use: ['html-withimg-loader']
+			loader: 'html-withimg-loader'
 		}]
 	},
 	plugins: [
+		// 自动生成index.html文件
 		new HtmlWebpackPlugin({
 			title: 'webpack标题',
-			filename: 'views/index.html',
+			filename: 'view/index.html',
 			template: __dirname + '/src/views/index.html'
 		}),
+		// 提取的CSS指定到目标文件夹下的style文件夹下面
 		new MiniCssExtractPlugin({
 			filename: "styles/[name].css",
 			chunkFilename: "styles/[id].css"
 		}),
-		new CleanWebpackPlugin(['dist']),
+		new CleanWebpackPlugin(['dist'])
 	]
 }
