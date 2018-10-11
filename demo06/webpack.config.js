@@ -14,12 +14,13 @@ const {
 // setIterm2Badge("开发环境");
 const PurifyCSSPlugin = require('purifycss-webpack');
 const glob = require("glob");
-console.log("寻找文件", glob.sync(join(__dirname, './dist/*.html')));
+console.log("寻找文件", glob.sync(join(__dirname, './src/*.html')));
 webpackConfig = {
     module: {
         rules: [{
             test: /\.css$/,
-            use: [{
+            use: [
+				{
                     loader: MiniCssExtractPlugin.loader,
                     options: {
                         publicPath: '../'
@@ -44,9 +45,10 @@ webpackConfig = {
             template:"src/index.html"
         }),
         new CleanWebpackPlugin(['dist']),
-        // new PurifyCSSPlugin({
-        //     paths: glob.sync(join(__dirname, './dist/*.html')),
-        // })
+        new PurifyCSSPlugin({
+            paths: glob.sync(join(__dirname, './src/*.html')),
+        })
     ],
 };
+// module.exports = webpackConfig;
 module.exports = merge(_mergeConfig, webpackConfig);
