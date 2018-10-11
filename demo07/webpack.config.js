@@ -34,7 +34,7 @@ webpackConfig = {
         }]
     },
     plugins: [
-        // new WebpackDeepScopeAnalysisPlugin(),
+        new WebpackDeepScopeAnalysisPlugin(),
         new MiniCssExtractPlugin({
             filename: _modeflag?"styles/[name].[hash:5].css":"styles/[name].css",
             chunkFilename: _modeflag?"styles/[id].[hash:5].css":"styles/[id].css"

@@ -1,17 +1,18 @@
 var webpack = require('webpack');
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 var entryPath = path.join(__dirname, './scripts');
-var outputPath = path.join(__dirname, './build');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var outputPath = path.join(__dirname, './dist');
 module.exports = {
-	// entry: entryPath + '/index',
-	// entry:[entryPath+"/app",entryPath+"/index"],//多入口数组用法，不建议使用
-	entry: { //多入口对象用法
+	// entry: { //多入口对象用法
+	// 	index: entryPath + "/index",
+	// 	app: entryPath + "/app"
+	// },
+	entry: { //单入口对象用法
 		index: entryPath + "/index",
-		app: entryPath + "/app"
-
+		// app: entryPath + "/app"
 	},
 	output: {
 		path: outputPath,
@@ -23,45 +24,44 @@ module.exports = {
 	module: {
 		rules: [{
 			test: /\.less$/,
-			use: ExtractTextPlugin.extract({
-				fallback: "style-loader",
-				// use:'css-loader!less-loader',
-				use: [{
-					loader: 'css-loader',
-					options: {
-						minimize: true
-					}
-				}, {
-					loader: 'less-loader',
-				}]
-			})
-		}, {
-			test: /\.es$/,
-			exclude: /(node_modules|bower_components)/,
-			use: {
-				loader: 'babel-loader',
-				options: {
-					presets: ['env']
-				}
-			}
+			use: [{
+				loader: MiniCssExtractPlugin.loader
+			}, {
+				loader: "css-loader"
+			}, {
+				loader: "less-loader"
+			}]
 		}]
+	},
+	optimization:{
+		splitChunks:{
+			cacheGroups:{
+				// vendor: {
+				// 	name: "vendor",
+				// 	test: /[\\/]node_modules[\\/]/,
+				// 	chunks: "all",
+				// 	priority: 10
+				//  },
+				  common: {
+					  name: "common",
+					  chunks: "all",
+					  minSize: 1,
+					  priority: 0
+				  }
+			}
+		}
 	},
 	plugins: [
 		// 自动生成index.html文件
 		new HtmlWebpackPlugin({
 			title: 'webpackdemo2',
 			filename: 'index.html',
-			minify: {
-				removeComments: true,
-				collapseWhitespace: true
-			},
-			minify:false,
-			chunks: ['vendor','index','app'],
-			chunksSortMode: function(chunk1,chunk2){
+			chunks: ['index', 'app','common'],
+			chunksSortMode: function (chunk1, chunk2) {
 				// var orders = [ 'vendor' , 'index' ,'app'];
 				// var orders = [ 'vendor' , 'app' ,'index'];
 				// var orders = [ 'index' , 'vendor' ,'app'];
-				var orders = [ 'index' , 'app' ,'vendor'];
+				var orders = [ 'common','index', 'app'];
 				// var orders = [ 'app' , 'index' ,'vendor'];
 				// var orders = [ 'app' , 'vendor' ,'index'];
 				var order1 = orders.indexOf(chunk1.names[0]);
@@ -70,21 +70,10 @@ module.exports = {
 			},
 		}),
 		// 提取的CSS指定到目标文件夹下的style文件夹下面
-		new ExtractTextPlugin("style/[name]-[chunkhash:5].css"),
-		// 压缩JS
-		new webpack.optimize.UglifyJsPlugin({
-			compress: {
-				warnings: false
-			},
-			mangle: true
+		new MiniCssExtractPlugin({
+			filename: "styles/[name].css",
+			chunkFilename: "styles/[id].css"
 		}),
-		// 提取公共文件
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'vendor',
-			minify: {
-				collapseWhitespace: true
-			},
-			filename: 'scripts/[name]-[chunkhash:5].js'
-		}),
+		new CleanWebpackPlugin(['dist'])
 	]
 }
