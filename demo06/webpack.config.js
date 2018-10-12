@@ -28,8 +28,8 @@ webpackConfig = {
                 },
                 // 'style-loader', 
                 {
-                    // loader: 'css-loader?modules&localIdentName=[name]_[local]-[hash:base64:5]'
-                    loader: 'css-loader'
+                    loader: 'css-loader?modules&localIdentName=[name]_[local]-[hash:base64:5]'
+                    // loader: 'css-loader'
                 }
             ]
         }]
