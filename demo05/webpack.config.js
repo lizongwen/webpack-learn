@@ -33,21 +33,15 @@ module.exports = {
 			}]
 		}]
 	},
-	optimization:{
-		splitChunks:{
-			cacheGroups:{
-				// vendor: {
-				// 	name: "vendor",
-				// 	test: /[\\/]node_modules[\\/]/,
-				// 	chunks: "all",
-				// 	priority: 10
-				//  },
-				  common: {
-					  name: "common",
-					  chunks: "all",
-					  minSize: 1,
-					  priority: 0
-				  }
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				common: {
+					chunks: "initial",
+					name: "common",
+					minChunks: 2,
+					minSize: 0,
+				}
 			}
 		}
 	},
@@ -56,12 +50,12 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			title: 'webpackdemo2',
 			filename: 'index.html',
-			chunks: ['index', 'app','common'],
+			chunks: ['index', 'app', 'common'],
 			chunksSortMode: function (chunk1, chunk2) {
 				// var orders = [ 'vendor' , 'index' ,'app'];
 				// var orders = [ 'vendor' , 'app' ,'index'];
 				// var orders = [ 'index' , 'vendor' ,'app'];
-				var orders = [ 'common','index', 'app'];
+				var orders = ['common', 'index', 'app'];
 				// var orders = [ 'app' , 'index' ,'vendor'];
 				// var orders = [ 'app' , 'vendor' ,'index'];
 				var order1 = orders.indexOf(chunk1.names[0]);
