@@ -65,6 +65,9 @@ webpackConfig = {
 		}]
 	},
 	plugins: [
+		new webpack.DefinePlugin({
+			'process.env': _modeflag ? { ctx: '"/prodApi"' } : { ctx: '"/testApi"' }
+		}),
 		new CleanWebpackPlugin(['dist']),
 		new webpack.HotModuleReplacementPlugin(),
 		// new WebpackDeepScopeAnalysisPlugin(),
